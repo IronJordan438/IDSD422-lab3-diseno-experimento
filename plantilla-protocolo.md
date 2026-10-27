@@ -6,11 +6,12 @@ Completa cada sección. Usa commits por sección; la historia del repositorio se
 
 ## 1. Pregunta e hipótesis
 
-*Hipótesis que el experimento pueda confirmar o refutar (formúlela como una comparación medible entre los grupos).*
-
+El producto  en el pasillo principal vende mas en promedio que su ubicación habitual en ventas
+semanales durante 4 semanas
 ## 2. Unidad experimental
 
 *¿Qué recibe el tratamiento? ¿Cuántas unidades se incluyen?*
+Semana-Tienda (# de clientes * # de semanas ##)
 
 - Unidad:
 - Número de unidades y justificación:
