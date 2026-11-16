@@ -12,11 +12,23 @@ cat("Promedio de ventas por ubicación:\n")
 print(promedio_ventas)
 cat("----------------------------------------\n")
 
+#Salida
+# Promedio de ventas por ubicación:
+# ubicacion
+# habitual             1040.0
+# pasillo_principal    1335.0
+
 # TODO 3: imprime el número de registros por grupo (table)
 conteo_grupos <- table(datos$ubicacion)
 cat("Número de registros por grupo:\n")
 print(conteo_grupos)
 cat("----------------------------------------\n")
+
+#Salida
+#     ubicacion	          count
+#     pasillo_principal	    2
+#     habitual	            2
+
 
 # TODO 4: escribe 2–3 líneas de interpretación (sección 9 de la plantilla):
 #         por qué con 4 filas no se puede concluir y qué le faltaría al análisis
