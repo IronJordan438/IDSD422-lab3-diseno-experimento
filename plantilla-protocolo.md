@@ -1,6 +1,6 @@
 # Plantilla de protocolo — Experimento de ubicación de producto
 
-**Equipo:** ___ · **Integrantes:** ___ · **Fecha:** 27/10/2026
+**Equipo:** 1 · **Integrantes:** Jordan Sangucho · **Fecha:** 27/10/2026
 
 Completa cada sección. Usa commits por sección; la historia del repositorio se revisa.
 
