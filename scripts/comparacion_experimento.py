@@ -7,16 +7,14 @@ import pandas as pd
 df = pd.read_csv("plantillas/registro_experimento.csv")
 
 # TODO 2: calcula e imprime el promedio de ventas_producto por ubicacion
-promedio_ventas = df.groupby("ubicacion")["ventas_producto"].mean()
-print("Promedio de ventas por ubicación:")
-print(promedio_ventas)
-print("-" * 40)
+print("calcula e imprime el promedio de ventas_producto por ubicacion")
+df.groupby("ubicacion")["ventas_producto"].mean()
+df["ubicacion"].value_counts()
 
 # TODO 3: imprime el número de registros por grupo (value_counts)
 conteo_grupos = df["ubicacion"].value_counts()
 print("Número de registros por grupo:")
 print(conteo_grupos)
-print("-" * 40)
 
 # TODO 4: escribe 2–3 líneas de interpretación (sección 9 de la plantilla):
 #         por qué con 4 filas no se puede concluir y qué le faltaría al análisis
