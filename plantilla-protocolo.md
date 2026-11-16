@@ -8,6 +8,10 @@ Completa cada sección. Usa commits por sección; la historia del repositorio se
 
 El producto  en el pasillo principal vende mas en promedio que su ubicación habitual en ventas
 semanales durante 4 semanas
+- **Pregunta de investigación:** ¿Cambiar la ubicación del producto estrella desde su góndola habitual hacia el pasillo principal aumenta sus ventas semanales promedio en las tiendas de RetailAndina S.A. durante un período de 4 semanas?
+- **Hipótesis nula (H 0):** El promedio de ventas semanales (en unidades vendidas y dólares) del producto estrella ubicado en el pasillo principal es igual o menor al promedio de ventas semanales en su ubicación habitual (pasillo\_principal) (habitual) durante las 4 semanas de evaluación.
+- **Hipótesis alternativa (H 1):** El promedio de ventas semanales del producto estrella ubicado en el pasillo principal es significativamente mayor que el promedio de ventas semanales en su ubicación habitual (pasillo\_principal) > (habitual) durante las 4 semanas de evaluación.
+
 ## 2. Unidad experimental
 
 *¿Qué recibe el tratamiento? ¿Cuántas unidades se incluyen?*
