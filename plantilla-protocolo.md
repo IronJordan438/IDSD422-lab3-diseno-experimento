@@ -16,8 +16,8 @@ semanales durante 4 semanas
 
 *¿Qué recibe el tratamiento? ¿Cuántas unidades se incluyen?*
 
-Unidad: La combinación semana-tienda (observación semanal de cada sucursal bajo una ubicación asignada), organizada bajo un diseño cruzado (crossover) donde cada tienda recibe ambas condiciones en semanas alternas. 
-Número de Unidades y Justificación: Se incluyen 10 tiendas evaluadas durante 4 semanas, generando N = 40 unidades experimentales (semana-tienda) (20 en pasillo_principal y 20 en habitual). Al alternar la ubicación por semana dentro de cada tienda, cada sucursal actúa como su propio control, eliminando la variabilidad entre ciudades y reduciendo drásticamente el error estándar con menos tiendas operativas.
+- Unidad: La combinación semana-tienda (observación semanal de cada sucursal bajo una ubicación asignada), organizada bajo un diseño cruzado (crossover) donde cada tienda recibe ambas condiciones en semanas alternas. 
+- Número de Unidades y Justificación: Se incluyen 10 tiendas evaluadas durante 4 semanas, generando N = 40 unidades experimentales (semana-tienda) (20 en pasillo_principal y 20 en habitual). Al alternar la ubicación por semana dentro de cada tienda, cada sucursal actúa como su propio control, eliminando la variabilidad entre ciudades y reduciendo drásticamente el error estándar con menos tiendas operativas.
 
 ## 3. Factor, niveles y tratamiento
 
