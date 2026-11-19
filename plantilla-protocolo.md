@@ -21,9 +21,11 @@ semanales durante 4 semanas
 
 ## 3. Factor, niveles y tratamiento
 
-- **Factor** (variable manipulada):
+- **Factor** (variable manipulada): Ubicación física de exhibición del producto estrella dentro de la tienda (`ubicacion`).
 - **Niveles** (valores del factor):
-- **Tratamiento** (combinación asignada):
+- 1. `pasillo_principal` (cabecera o isla de alto tráfico en el corredor central).
+  2. `habitual` (góndola o estantería estándar de su categoría).
+- **Tratamiento** (combinación asignada): Asignación activa de la exhibición del producto estrella en el nivel **`pasillo_principal`** durante 4 semanas completas sin alterar su precio ni su empaque. El nivel `habitual` corresponde a la condición de control (ausencia de intervención).
 
 ## 4. Grupo de control
 
