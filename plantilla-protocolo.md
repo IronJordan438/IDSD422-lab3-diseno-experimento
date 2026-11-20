@@ -30,8 +30,7 @@ semanales durante 4 semanas
 ## 4. Grupo de control
 
 *¿Cuál es la referencia sin tratamiento y qué rol cumple?*
-Son las 10 tiendas seleccionadas al azar donde el producto estrella permanece en su ubicación **`habitual`** durante las 4 semanas del estudio.
-Actúa como línea base contemporánea (referencia sin tratamiento). Permite aislar el efecto real de la ubicación frente a variaciones temporales externas (por ejemplo, quincenas, feriados, clima o campañas publicitarias generales de la marca). Si las ventas subieran en ambos grupos por igual, el grupo de control evitaría atribuir erróneamente ese aumento al pasillo principal.
+Son las 20 observaciones semana-tienda en las que el producto permanece en su ubicación habitual (2 semanas por cada una de las 10 tiendas), funcionando como control interno pareado para cada sucursal.
 
 ## 5. Aleatorización
 
@@ -205,8 +204,39 @@ Los factores que podrían invalidar el experimento serian:
 ## 9. Comparación en código (Python/R)
 
 *Escribe `scripts/comparacion_experimento.py` (o `.R`): debe cargar `plantillas/registro_experimento.csv` y calcular el promedio de `ventas_producto` por `ubicacion`. Incluye la salida y responde:*
+```python
+import pandas as pd
 
+df = pd.read_csv("plantillas/registro_experimento.csv")
+
+promedio_ventas = df.groupby("ubicacion")["ventas_producto"].mean()
+print("Promedio de ventas por ubicación:")
+print(promedio_ventas)
+print("-" * 40)
+
+conteo_grupos = df["ubicacion"].value_counts()
+print("Número de registros por grupo:")
+print(conteo_grupos)
+```
+
+-Salidas
+| ubicacion | promedio_ventas |
+| :--- | :---: |
+| habitual | 1040.0 |
+| pasillo_principal | 1335.0 |
+
+| ubicacion | count |
+| :--- | :---: |
+| pasillo_principal | 2 |
+| habitual | 2 |
 
 - ¿Qué grupo muestra mayor venta promedio en la plantilla?
+  * El grupo pasillo_principal muestra un promedio mayor con 1335.0 unidades/ventas frente a 1040.0 del grupo habitual (una diferencia aparente de +295.0).
 - ¿Por qué con 4 filas no se puede concluir nada sobre el efecto de la ubicación?
+  * Porque con apenas 4 observaciones (2 tiendas por grupo en una sola semana) la muestra carece de potencia estadística para distinguir un efecto real de la simple variación aleatoria entre tiendas.
 - Si el experimento se ejecutara con tu protocolo, ¿qué le faltaría a este análisis para ser justo?
+  Con los protocolos del experimento lo que faltaría en el experimento es:  
+  * Completar el tamaño muestral del diseño: El scrip básico solo evalúa 4 filas, mientras que el del protocolo requiere las 40 observaciones de las 4 semanas    evaluadas
+  * Aplicar un análisis pareado intra-tienda en lugar de un promedio global simple: Como cada tienda prueba ambas ubicaciones en semanas alternas, l análisis debe agrupar tienda y ubicacion (piv = diseno.groupby(["tienda", "ubicacion"])["ventas_producto"].mean().unstack()) para calcular la **diferencia dentro de cada tienda** (pasillo_principal - habitual), bloqueando así el efecto basal de cada sucursal.
+  * Filtrar o ajustar las promociones simultáneas:
+  Incluir inferencia estadística: Calcular únicamente la media no basta para tomar decisiones gerenciales; falta evaluar la variabilidad entre tiendas mediante una prueba t pareada (scipy.stats.ttest_rel) y calcular su **intervalo de confianza al 95%** para confirmar si la diferencia promedio observada es estadísticamente significativa frente al azar.
