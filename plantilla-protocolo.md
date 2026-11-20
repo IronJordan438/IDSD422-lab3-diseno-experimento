@@ -42,37 +42,43 @@ Se utiliza una aleatorización de la secuencia inicial mediante generador con se
 - **Línea de código de la asignación (Python o R):** escribe el comando que asigna al azar tus N unidades a los dos grupos (tratamiento y control) y ejecútalo con semilla. Incluye el resultado de una corrida y explica por qué el sorteo reparte los factores desconocidos entre los grupos.
 - Linea de codigo vista en clases
 
-Diseño del Experimento
+```python
+# Diseño del Experimento
 import json
 import pandas as pd
 import numpy as np
 from scipy import stats
 
-tiendas = ["Quito Norte", "Quito Sur", "Guayaquil Centro", "Guayaquil Norte", "Cuenca Centro",
-          "Cuenca Sur", "Ambato Centro", "Manta", "Loja", "Machala"]
-semanas = [1,2,3,4]
+tiendas = [
+    "Quito Norte", "Quito Sur", "Guayaquil Centro", "Guayaquil Norte",
+    "Cuenca Centro", "Cuenca Sur", "Ambato Centro", "Manta", "Loja", "Machala"
+]
+semanas = [1, 2, 3, 4]
 
-Sorteo de la condicion inicial
+# Sorteo de la condición inicial
 rng = np.random.default_rng(1234597)
 primera = rng.choice(["pasillo_principal", "habitual"], size=len(tiendas))
 
 filas = []
-for tienda, cond in zip(tiendas,primera):
-  otra = "habitual" if cond =="pasillo_principal" else "pasillo_principal"
-  for s in semanas:
-    filas.append({"tienda": tienda,"semana":s,
-                  "ubicacion": cond if s%2 == 1 else otra})
+for tienda, cond in zip(tiendas, primera):
+    otra = "habitual" if cond == "pasillo_principal" else "pasillo_principal"
+    for s in semanas:
+        filas.append({
+            "tienda": tienda,
+            "semana": s,
+            "ubicacion": cond if s % 2 == 1 else otra
+        })
 
-   #print (json.dumps(filas))
+# print(json.dumps(filas))
 
 diseno = pd.DataFrame(filas)
-#print (diseno)
+# print(diseno)
 
-Simulacion de la Ejecucion
+# Simulación de la Ejecución
 rng = np.random.default_rng(1234598)
 
-efecto_tienda = dict (zip(tiendas,rng.normal(1100,120,len(tiendas))))
-#print (efecto_tienda)
+efecto_tienda = dict(zip(tiendas, rng.normal(1100, 120, len(tiendas))))
+# print(efecto_tienda)
 
 efecto_semana = {1: 0, 2: 30, 3: 60, 4: 90}
 diseno["ventas_producto"] = (
@@ -82,46 +88,48 @@ diseno["ventas_producto"] = (
     rng.normal(0, 90, len(diseno))
 ).round(0).astype(int)
 
-print (diseno)
+print(diseno)
 
-Promocion Simultanea Registrada
+# Promoción Simultánea Registrada
 diseno["promocion_simultanea"] = "no"
 
-diseno.loc[(diseno["tienda"] == "Guayaquil Centro") & (diseno["semana"] == 1), "promocion_simultanea"] = "si"
+diseno.loc[
+    (diseno["tienda"] == "Guayaquil Centro") & (diseno["semana"] == 1),
+    "promocion_simultanea"
+] = "si"
 diseno.loc[diseno["promocion_simultanea"] == "si", "ventas_producto"] += 180
 
 diseno.to_csv("resultado_simulacion.csv", index=False)
 
-diseno
-
-Analisis Pareado: Una Fila por Tienda con sus Condiciones
-
-piv = diseno.groupby(["tienda","ubicacion"])["ventas_producto"].mean().unstack()
-piv["diferencia"]= piv["pasillo_principal"] - piv["habitual"]
+# Análisis Pareado: Una Fila por Tienda con sus Condiciones
+piv = diseno.groupby(["tienda", "ubicacion"])["ventas_producto"].mean().unstack()
+piv["diferencia"] = piv["pasillo_principal"] - piv["habitual"]
 
 media = piv["diferencia"].mean()
-dev = piv ["diferencia"].std(ddof=1)
+dev = piv["diferencia"].std(ddof=1)
 
 print(media)
 print(dev)
 n = len(piv)
 
 t_crict = stats.t.ppf(0.975, df=9)
- #print (t_crict)
-ic_inf = media - (t_crict*dev/n**0.5)
-ic_sup = media + (t_crict*dev/n**0.5)
+# print(t_crict)
+ic_inf = media - (t_crict * dev / n**0.5)
+ic_sup = media + (t_crict * dev / n**0.5)
 print(ic_inf)
 print(ic_sup)
 
-independiente del numero de veces que se corra
-el experimento podemos decir que con un 95% de certeza
-el valor promedio de la diferencia de ventas del producto
-entre el pasillo principal y el habitual va caer en el rango
-print (f"IC 95%: [{ic_inf},{ic_sup}]")
+# Independiente del número de veces que se corra el experimento,
+# podemos decir que con un 95% de certeza el valor promedio de la
+# diferencia de ventas del producto entre el pasillo principal y el habitual
+# va a caer en el rango:
+print(f"IC 95%: [{ic_inf}, {ic_sup}]")
 
-Prueba p-value
+# Prueba p-value
 prueba = stats.ttest_rel(piv["pasillo_principal"], piv["habitual"])
-print (f"Prueba t: {prueba.pvalue: .10f}")
+print(f"Prueba t: {prueba.pvalue:.10f}")
+
+```
 
 | tienda | semana | ubicacion | ventas_producto |
 | :--- | :---: | :--- | :---: |
@@ -181,18 +189,23 @@ Prueba t:  0.0000409166
 
 | Factor a controlar | Cómo se controla o registra |
 |---|---|
-| 1. | |
-| 2. | |
-| 3. | |
-| 4. | |
+| 1. Promociones simultáneas | Con un control estricto y registros se prohibirá aplicarle al producto estrella descuentos y ofertas. Si una sucursal aplica una promoción por error se registra como `'si'` en el CSV para filtrar o ajustar el sesgo (+180 unidades) en el análisis.|
+| 2. Efecto basal de tienda y ciudad | Bloqueo intra-tienda evaluando las 10 tiendas en ambos niveles (pasillo principal y habitual), en semanas alternas, cada sucursal actúa como su propio control, para neutralizar diferencias estructurales de ventas base entre ciudades|
+| 3. Tendencia temporal por semana | Con contrapeso al sortear al azar que tiendas empiezan en `pasillo_principal` y cuáles en `habitual` asi amabs ubicaciones aparecen en semanas impares como en pares equilibrando el efecto del calendario |
+| 4. Día y hora exacta de reubicación semanal | Con un protocolo operativo estandarizado debido a que en cada semana se va a alternar la ubicación el cambio físico entre la góndola habitual y el pasillo principal debe realizarse estrictamente el domingo por la noche tras el cierre de caja, evitando que una semana mezcle días de ambas ubicaciones.|
 
 ## 8. Limitaciones del diseño
 
 *¿Qué podría invalidar el experimento si no se controla? ¿Qué no se podrá concluir?*
+Los factores que podrían invalidar el experimento serian:
+- Efecto de  Arrastre: Al cambiar la ubicación del producto semanalmente, los clientes que lo vieron en el pasillo principal podrían biscarlo intencionalmente en el habitual, atenuando la diferencia real.
+- Costo Operativo de la Reubicación Semanal: Se requiere un orden estricto del personal de la tienda al retirar el producto y rehubicarlo para no contaminar la medición semanal.
+- Promociones Simultaneas no Controladas: Si una tienda activa una promoción simultanea, sesga al alza el promedio de esa condición si no se filtra o modela.
 
 ## 9. Comparación en código (Python/R)
 
 *Escribe `scripts/comparacion_experimento.py` (o `.R`): debe cargar `plantillas/registro_experimento.csv` y calcular el promedio de `ventas_producto` por `ubicacion`. Incluye la salida y responde:*
+
 
 - ¿Qué grupo muestra mayor venta promedio en la plantilla?
 - ¿Por qué con 4 filas no se puede concluir nada sobre el efecto de la ubicación?
